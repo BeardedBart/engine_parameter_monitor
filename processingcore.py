@@ -31,13 +31,17 @@ def upload():
         file = request.files['workfile']
         
         if file.content_type == 'text/csv':
+            x,y = 5,3
             ftu = file
+            df = pd.read_csv(ftu)
             path = os.getcwd()+r"\static"
-            print(path)
-            CHTchart(ftu,path)
+            EGTchart(df,path,size_x=x,size_y=y)
+            CHTchart(df,path,size_x=x,size_y=y)
+            OilChart(df,path,size_x=x,size_y=y)
             
         elif file.content_type == 'application/vnd.openxmlformats-officedocument.spreadsheet.sheet' or file.content_type == 'application/vnd.ms-excel':
             df = pd.read_excel(file)
+            
         return redirect(url_for("processingcore.chart"))
 
 if __name__ == '__main__':

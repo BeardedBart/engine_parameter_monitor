@@ -7,16 +7,15 @@ import os
 
 
 def EGTchart(
-    path,
-    chartDir,
-    not_SI=0,
-):
+            df,
+            chartDir,
+            not_SI=0,
+            size_x=11,
+            size_y=8,):
     """
     Funkcja tworząca wykres wartości EGT oraz Wysokości
     w jednostce czasu.
     """
-    df = pd.read_csv(path, low_memory=False, sep=",", encoding="utf-8")
-
     df.columns = df.iloc[0, :]
     # print(df.columns) # sprawdzenie, czy kolumny się przestawiły
 
@@ -88,24 +87,28 @@ def EGTchart(
         ax1.set_ylabel("Temperatura [°F]")
         ax2.set_ylabel("Wysokość [ft]")
 
-    fig.set_size_inches(11, 8)
+    fig.set_size_inches(size_x, size_y)
     fig.set_dpi(300)
     fig.legend()
-    # plt.show()
 
     # saving procedure
-    basename = os.path.basename(path)
-    basename = basename[0:-4]
+    save_path = os.path.join(chartDir,"Wykres_EGT.png")
     plt.title("Wykres EGT cylindrów oraz wysokości w funkcji czasu.")
-    plt.savefig(f"{chartDir}/Wykres EGT_{basename}.png", dpi=600, format="png")
+    plt.savefig(save_path, dpi=600, format="png")
 
 
-def CHTchart(path, chartDir, not_SI=0):
+def CHTchart(
+            df, 
+            chartDir, 
+            not_SI=0, 
+            size_x=11,
+            size_y=8,):
     """
     Funkcja tworząca wykres wartości CHT oraz Wysokości
     w jednostce czasu.
     """
-    df = pd.read_csv(path, low_memory=False, sep=",", encoding="utf-8")
+    # df = pd.read_csv(path, low_memory=False, sep=",", encoding="utf-8")
+    
 
     df.columns = df.iloc[0, :]
     # print(df.columns) # sprawdzenie, czy kolumny się przestawiły
@@ -178,25 +181,25 @@ def CHTchart(path, chartDir, not_SI=0):
         ax1.set_ylabel("Temperatura [°F]")
         ax2.set_ylabel("Wysokość [ft]")
 
-    fig.set_size_inches(11, 8)
+    fig.set_size_inches(size_x, size_y)
     fig.set_dpi(300)
     fig.legend()
-    # plt.show()
 
     save_path = os.path.join(chartDir,"Wykres_CHT.png")
-    # basename = os.path.basename(path)
-    # basename = basename[0:-4]
     plt.title("Wykres CHT cylindrów oraz wysokości w funkcji czasu.")
-    # plt.savefig(f"{chartDir}/Wykres CHT_{basename}.png", dpi=600, format="png")
     plt.savefig(save_path, dpi=600, format="png")
 
 
-def OilChart(path, chartDir, not_SI=0):
+def OilChart(df, 
+            chartDir, 
+            not_SI=0,
+            size_x=11,
+            size_y=8,):
     """
     Funkcja tworząca wykres wartości ciśnienia
     oraz temperatury oleju w jednostce czasu.
     """
-    df = pd.read_csv(path, low_memory=False, sep=",", encoding="utf-8")
+    # df = pd.read_csv(path, low_memory=False, sep=",", encoding="utf-8")
 
     df.columns = df.iloc[0, :]
     # print(df.columns) # sprawdzenie, czy kolumny się przestawiły
@@ -252,17 +255,20 @@ def OilChart(path, chartDir, not_SI=0):
         ax2.set_ylabel("Ciśnienie [PSI]")
         ax1.set_ylabel("Temperatura [°F]")
 
-    fig.set_size_inches(11, 8)
+    fig.set_size_inches(size_x , size_y)
     fig.set_dpi(300)
     fig.legend()
     # plt.show()
 
-    basename = os.path.basename(path)
-    basename = basename[0:-4]
+    # basename = os.path.basename(path)
+    # basename = basename[0:-4]
+    save_path = os.path.join(chartDir,"Wykres_Oil.png")
     plt.title("Wykres temperatury oraz ciśnienia oleju w funkcji czasu.")
-    plt.savefig(f"{chartDir}/Wykres OIL_{basename}.png", dpi=600, format="png")
+    plt.savefig((save_path), dpi=600, format="png")
 
 
+#====================================================================================================
+#NOTE: yet to be added
 def WarningChart(i1, dat1, ylabel, chartDir, name, title):
     """
     Kod odpowiadający za tworzenie wykresów zawierających odchylenia

@@ -11,11 +11,13 @@
 
 # TO DO & Work In Progress
 - **[WIP]** <span style="color:cyan"> umozliwienie odpalania starego prgoramu przez GUI - modyfikacja *main.py*
+
 - implementacja algorytmu odnośnie gradientu z urządzenia z inżynierki
+- <span style="color:red"> GIT siedzi lokalnie 
 
-- **[WIP]** <span style="color:yellow">należy połączyć program z GIT oraz Githubem</span>.
 
-# DONE:
+
+# <span style="color:#94fe0c"> DONE:
 - ✅baza danych o parametrach pracy poszczególnych silników:
   - EGT;
   - CHT;
@@ -24,3 +26,5 @@
   - Typ;
   - *to be cont.?*
 - ✅ strona startowa
+- ✅ należy połączyć program z GIT oraz  <span style="color:yellow">Githubem
+- modyfikacja tworzenia wykresów w **chartgen.py** <span style="color:#94fe0c"> wykresy się tworzą!!!
