@@ -1,0 +1,29 @@
+# test of test
+from flask import Flask, render_template 
+from flask import request
+import pandas as pd
+
+
+#initialise program
+app = Flask(__name__, 
+            template_folder="templates", 
+            static_folder='static', 
+            static_url_path='/')
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+# add external site
+from fdbsql import engdb
+app.register_blueprint(engdb, url_prefix="/engdb")
+
+
+from processingcore import processing
+app.register_blueprint(processing, url_prefix="/process_file")
+
+
+if __name__ == '__main__':
+    app.run(debug=True)

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Engine param{% endblock %}</title>
+    <style>
+        body {
+            background-color: #282828; /* szary kolor */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #d7b300; /*default #333 */
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
+</head>
+    <body>
+        {% block content %}{%endblock%}
+        <script src="/js/bootstrap.js"></script>
+    </body>
+</html>

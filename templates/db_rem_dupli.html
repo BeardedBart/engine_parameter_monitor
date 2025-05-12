@@ -1,0 +1,10 @@
+{%extends "base.html"%}
+{%block content%}
+<body>
+<div class="col-xs-1" align="cener">
+<form method="POST" action="{{url_for('fdbsql.del_dupli')}}">
+    <input type="submit" name="rmvdupl" class="btn btn-danger" value="Potwierdź usunięcie duplikatów">
+</form>
+</div>
+</body>
+{%endblock%}

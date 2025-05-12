@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{%block content%}
+<body>
+    <div class="col-xs-1" align="center">
+        <h1>Witaj na stronie "Engine param"</h1>
+        <h1></h1>
+        <a href="{{url_for('processingcore.upload')}}" class="btn btn-primary">Wgraj plik</a>
+    </div>
+    <div class="col-xs-1" align="center">
+        <h1></h1>
+        <a href="{{url_for('fdbsql.database')}}" class="btn btn-primary">
+            Podejrzyj bazę parametrów
+        </a>
+    </div>
+</body>
+{%endblock%}
