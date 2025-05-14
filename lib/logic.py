@@ -4,9 +4,9 @@ from lib.imath import *
 from lib.chartgen import *
 
 
-def checkEGT(file, error_val=700):
-    df = pd.read_csv(file, low_memory=False, sep=",")
-    df.columns = df.iloc[0, :]
+def checkEGT(df, error_val=700):
+    # df = pd.read_csv(file, low_memory=False, sep=",")
+    # df.columns = df.iloc[0, :]
 
     EGT1 = df["E1 EGT1"].replace(np.nan, "0.0").tolist()
     EGT1.remove("E1 EGT1")
@@ -79,9 +79,9 @@ def checkEGT(file, error_val=700):
     return i1, egt1E, i2, egt2E, i3, egt3E, i4, egt4E
 
 
-def checkCHT(file, error_val=170):
-    df = pd.read_csv(file, low_memory=False, sep=",")
-    df.columns = df.iloc[0, :]
+def checkCHT(df, error_val=170):
+    # df = pd.read_csv(file, low_memory=False, sep=",")
+    # df.columns = df.iloc[0, :]
 
     CHT1 = df["E1 CHT1"].replace(np.nan, "0.0").tolist()
     CHT1.remove("E1 CHT1")
@@ -154,9 +154,9 @@ def checkCHT(file, error_val=170):
     return i1, cht1E, i2, cht2E, i3, cht3E, i4, cht4E
 
 
-def checkOil(file, p_val, t_val):
-    df = pd.read_csv(file, low_memory=False, sep=",")
-    df.columns = df.iloc[0, :]
+def checkOil(df, p_val, t_val):
+    # df = pd.read_csv(file, low_memory=False, sep=",")
+    # df.columns = df.iloc[0, :]
 
     # Ciśnienie Oleju [bar]
     OP = df["E1 OilP"].replace(np.nan, "0.0").tolist()

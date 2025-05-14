@@ -13,18 +13,21 @@
 - **[WIP]** <span style="color:cyan"> umozliwienie odpalania starego prgoramu przez GUI - modyfikacja *main.py*
 
 - implementacja algorytmu odnośnie gradientu z urządzenia z inżynierki
+  
 - <span style="color:red"> GIT siedzi lokalnie 
+  
+- Informacja zwrotna dla użytkownika - w posaci "flashed messages (?)"
 
 
 
-# <span style="color:#94fe0c"> DONE:
-- ✅baza danych o parametrach pracy poszczególnych silników:
+# ✅<span style="color:#94fe0c"> DONE ✅:
+- baza danych o parametrach pracy poszczególnych silników:
   - EGT;
   - CHT;
   - TemOil;
   - Nazwa silnika;
   - Typ;
   - *to be cont.?*
-- ✅ strona startowa
-- ✅ należy połączyć program z GIT oraz  <span style="color:yellow">Githubem
-- modyfikacja tworzenia wykresów w **chartgen.py** <span style="color:#94fe0c"> wykresy się tworzą!!!
+- strona startowa
+- program ma kontrolę wersji GIT
+- modyfikacja tworzenia wykresów w **chartgen.py, logic.py oraz processingcore.py** <span style="color:#94fe0c"> **wszystkie** wykresy się tworzą!!!
