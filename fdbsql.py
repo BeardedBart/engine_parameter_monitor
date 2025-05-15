@@ -67,6 +67,8 @@ def add_val():
         toil = request.form.get('toil')
         cht = request.form.get('cht')
         egt = request.form.get('egt')
+        p_oil_l = request.form.get('')
+        p_oil_h = request.form.get('')
         
         cur.execute(f"""
                     INSERT INTO engpdb VALUES (
@@ -74,7 +76,9 @@ def add_val():
                         '{typ}',
                         '{toil}',
                         '{cht}',
-                        '{egt}'
+                        '{egt}',
+                        '{p_oil_l}',
+                        '{p_oil_h}'
                     );""")
         connect.commit()
         connect.close()
@@ -116,6 +120,10 @@ def del_dupli():
         return redirect(url_for('fdbsql.database'))
     
     return render_template("db_rem_dupli.html")
+
+@engdb.route("/mod_row", methods=['GET','POST'])
+def mod_row():
+    ...
 
 if __name__ == '__main__':
     print("Wrong way!")
