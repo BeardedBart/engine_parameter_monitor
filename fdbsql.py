@@ -1,6 +1,6 @@
 #flask blueprints for db of SQLite3
 from flask import Blueprint, render_template, redirect
-from flask import g, request, url_for, Response
+from flask import g, request, url_for, session
 import sqlite3 
 # import os 
  
@@ -84,6 +84,7 @@ def add_val():
         connect.close()
         return redirect(url_for("fdbsql.database"))
 
+
 @engdb.route("/remove", methods=['GET','POST'])
 def del_val():
     if request.method == 'POST':
@@ -121,9 +122,34 @@ def del_dupli():
     
     return render_template("db_rem_dupli.html")
 
-@engdb.route("/mod_row", methods=['GET','POST'])
-def mod_row():
-    ...
+
+@engdb.route("/mod_row_main", methods=['GET','POST'])
+def mod_row_main():
+    temp_data = get_data(get_db().cursor())
+    if request.method == 'POST':
+        conn = get_db()
+        cur = conn.cursor()
+        engname = request.form.get('engname')
+        typ =  request.form.get('typ')
+        toil = request.form.get('toil')
+        cht = request.form.get('cht')
+        egt = request.form.get('egt')
+        p_oil_l = request.form.get('p_oil_l')
+        p_oil_h = request.form.get('p_oil_h')
+        
+        cur.execute(f"""
+                    UPDATE engpdb SET
+                        typ='{typ}',
+                        TOil='{toil}',
+                        egt='{cht}',
+                        cht='{egt}',
+                        oil_press_l='{p_oil_l}',
+                        oil_press_h='{p_oil_h}'
+                    WHERE eng_name='{engname}';""")
+        conn.commit()
+        conn.close()
+    
+    return render_template('db_chng_row.html', tbl=temp_data)
 
 if __name__ == '__main__':
     print("Wrong way!")

@@ -6,17 +6,17 @@
 
 # CORE
 - pandas + numpy,
-- csv + sql (?) (08.05.2025)
+- csv + sql (**WIP**) (08.05.2025)
 - github - kontrola wersji 
 
 # TO DO & Work In Progress
-- **[WIP]** <span style="color:cyan"> umozliwienie odpalania starego prgoramu przez GUI - modyfikacja *main.py*
+- **[WIP]** <span style="color:cyan"> umozliwienie odpalania starego prgoramu przez GUI - modyfikacja *main.py* </span>(zostało tworzenie PDF)
 
 - implementacja algorytmu odnośnie gradientu z urządzenia z inżynierki
   
 - <span style="color:red"> GIT siedzi lokalnie 
   
-- Informacja zwrotna dla użytkownika - w posaci "flashed messages (?)"
+- Informacja zwrotna dla użytkownika - w postaci "flashed messages (?)"
 
 
 
@@ -28,6 +28,7 @@
   - Nazwa silnika;
   - Typ;
   - *to be cont.?*
+- **Wszystkie funkcjonalności bazy danych działają!**
 - strona startowa
 - program ma kontrolę wersji GIT
 - modyfikacja tworzenia wykresów w **chartgen.py, logic.py oraz processingcore.py** <span style="color:#94fe0c"> **wszystkie** wykresy się tworzą!!!
