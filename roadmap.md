@@ -10,7 +10,9 @@
 - github - kontrola wersji 
 
 # TO DO & Work In Progress
-- **[WIP]** <span style="color:cyan"> umozliwienie odpalania starego prgoramu przez GUI - modyfikacja *main.py* </span>(zostało tworzenie PDF)
+- **[WIP]** <span style="color:cyan"> umozliwienie odpalania starego prgoramu przez GUI - modyfikacja *main.py* </span>
+  - tworzenie rpaortu PDF
+  - przypisanie jednostek SI vs Imperial w części bazy danych
 
 - implementacja algorytmu odnośnie gradientu z urządzenia z inżynierki
   

@@ -52,7 +52,7 @@ def upload():
 
         
         if file.content_type == 'text/csv':
-            x,y = 5,3
+            x,y = 11,7
             ftu = file
             df = pd.read_csv(ftu, low_memory=False)
             path = os.getcwd()+r"\static"

@@ -26,4 +26,10 @@ app.register_blueprint(processing, url_prefix="/process_file")
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    import os
+    url = "http://127.0.0.1:5000"
+    os.startfile(url)
+    app.run(debug=True) # after this command, lines od code do not execute, 
+    # command runs like "while True"
+    
+    
