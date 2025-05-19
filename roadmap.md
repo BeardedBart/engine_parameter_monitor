@@ -11,15 +11,12 @@
 
 # TO DO & Work In Progress
 - **[WIP]** <span style="color:cyan"> umozliwienie odpalania starego prgoramu przez GUI - modyfikacja *main.py* </span>
-  - tworzenie rpaortu PDF
+  - tworzenie raport PDF
   - przypisanie jednostek SI vs Imperial w części bazy danych
 
 - implementacja algorytmu odnośnie gradientu z urządzenia z inżynierki
   
 - <span style="color:red"> GIT siedzi lokalnie 
-  
-- Informacja zwrotna dla użytkownika - w postaci "flashed messages (?)"
-
 
 
 # ✅<span style="color:#94fe0c"> DONE ✅:
@@ -34,3 +31,4 @@
 - strona startowa
 - program ma kontrolę wersji GIT
 - modyfikacja tworzenia wykresów w **chartgen.py, logic.py oraz processingcore.py** <span style="color:#94fe0c"> **wszystkie** wykresy się tworzą!!!
+- Informacja zwrotna dla użytkownika - w postaci <span style="color:#94fe0c">"flashed messages"

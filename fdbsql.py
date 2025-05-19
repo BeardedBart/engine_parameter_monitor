@@ -1,6 +1,6 @@
 #flask blueprints for db of SQLite3
 from flask import Blueprint, render_template, redirect
-from flask import g, request, url_for, session
+from flask import g, request, url_for, flash
 import sqlite3 
 # import os 
  
@@ -10,6 +10,7 @@ engdb = Blueprint(__name__, "engdb",
                   template_folder="templates",
                   static_folder='static', 
                   static_url_path='/')
+
 
 PathToDB = 'engparamdb.db'
 
@@ -37,6 +38,8 @@ def make_db(cursor):
                            TOil REAL,
                            cht REAL,
                            egt REAL, 
+                           oil_press_l REAL,
+                           oil_press_h REAL
                        );
                        """)
     else:
@@ -47,6 +50,13 @@ def get_data(cursor):
     data = cursor.execute("""SELECT * FROM engpdb""").fetchall()
     return data
 
+def g_coln(cursor,column):
+    # GET COLUMN
+    temp = cursor.execute(f"SELECT {column} FROM engpdb").fetchall()
+    out = []
+    for i in temp:
+        out.append(i[0])
+    return out
 
 @engdb.route("/")
 def database():
@@ -90,15 +100,21 @@ def del_val():
     if request.method == 'POST':
         conn = get_db()
         cur = conn.cursor()
+        check = g_coln(cur,'eng_name')
         rmvname = request.form.get('rmvname')
-        cur.execute(f"""DELETE FROM engpdb 
-                    WHERE eng_name='{rmvname}'
-                    """)
         
-        conn.commit()
-        conn.close()
-        return redirect(url_for('fdbsql.database'))
-    
+        if rmvname in check: 
+            cur.execute(f"""DELETE FROM engpdb 
+                        WHERE eng_name='{rmvname}'
+                        """)
+            
+            conn.commit()
+            conn.close()
+            return redirect(url_for('fdbsql.database'))
+        else:
+            flash("Podany silnik nie istnieje w bazie danych, wpisz nazwę ponownie.")
+            return redirect(url_for('fdbsql.del_val'))
+            
     return render_template("db_rem_row.html")
     
     
@@ -130,24 +146,30 @@ def mod_row_main():
         conn = get_db()
         cur = conn.cursor()
         engname = request.form.get('engname')
-        typ =  request.form.get('typ')
-        toil = request.form.get('toil')
-        cht = request.form.get('cht')
-        egt = request.form.get('egt')
-        p_oil_l = request.form.get('p_oil_l')
-        p_oil_h = request.form.get('p_oil_h')
         
-        cur.execute(f"""
-                    UPDATE engpdb SET
-                        typ='{typ}',
-                        TOil='{toil}',
-                        egt='{cht}',
-                        cht='{egt}',
-                        oil_press_l='{p_oil_l}',
-                        oil_press_h='{p_oil_h}'
-                    WHERE eng_name='{engname}';""")
-        conn.commit()
-        conn.close()
+        check = g_coln(cur,'eng_name')
+        if engname in check:
+            typ =  request.form.get('typ')
+            toil = request.form.get('toil')
+            cht = request.form.get('cht')
+            egt = request.form.get('egt')
+            p_oil_l = request.form.get('p_oil_l')
+            p_oil_h = request.form.get('p_oil_h')
+            
+            cur.execute(f"""
+                        UPDATE engpdb SET
+                            typ='{typ}',
+                            TOil='{toil}',
+                            egt='{cht}',
+                            cht='{egt}',
+                            oil_press_l='{p_oil_l}',
+                            oil_press_h='{p_oil_h}'
+                        WHERE eng_name='{engname}';""")
+            conn.commit()
+            conn.close()
+        else:
+            flash("Podany silnik nie jest w bazie danych, spróbuj wpisać nazwę ponownie")
+            return redirect(url_for('fdbsql.mod_row_main'))
     
     return render_template('db_chng_row.html', tbl=temp_data)
 

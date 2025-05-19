@@ -1,6 +1,6 @@
 # CORE responsible for merging code from engineering degree to graduate degree
 from flask import Blueprint, render_template, redirect
-from flask import g, request, url_for, Response
+from flask import g, request, url_for, flash
 
 
 processing = Blueprint(__name__, "processing",
@@ -15,7 +15,7 @@ import pandas as pd
 # import numpy as np
 from lib.chartgen import *
 from lib.logic import *
-import os 
+import os, time
 
 def get_db():
     db = getattr(g, "_database", None)
@@ -46,9 +46,11 @@ def upload():
                 
         if eng in set(mdb["eng_name"]):
             control_r = mdb.loc[mdb["eng_name"]==eng].to_numpy().tolist()#control row
-            print(control_r) # Tu będzie pozytywne info zwrotne pop up
+            # print(control_r) # Tu będzie pozytywne info zwrotne pop up
+            flash("Podany silnik istnieje w bazie danych")
         else:
-            print("Podany silnik nie istnieje w bazie danych") # Tu będzie negatywne info zwrotne pop up
+            flash("Podany silnik nie istnieje w bazie danych")
+            return redirect(url_for("processingcore.upload"))# Tu będzie negatywne info zwrotne pop up
 
         
         if file.content_type == 'text/csv':
@@ -135,7 +137,7 @@ def upload():
             
         elif file.content_type == 'application/vnd.openxmlformats-officedocument.spreadsheet.sheet' or file.content_type == 'application/vnd.ms-excel':
             df = pd.read_excel(file)
-            
+        
         return redirect(url_for("processingcore.chart"))
 
 if __name__ == '__main__':
