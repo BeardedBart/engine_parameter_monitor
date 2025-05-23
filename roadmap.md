@@ -1,17 +1,18 @@
 # Web GUI na stan 
-- <span style="color:green"> kilka stron
-- <span style="color:green"> jedna z nich to DB, 
-- <span style="color:orange"> strona startowa,
-- <span style="color:yellow"> implementacja funkcji "wgraj plik"
+- <span style="color:lime"> kilka stron
+- <span style="color:lime"> jedna z nich to DB, 
+- <span style="color:lime"> strona startowa,
+- <span style="color:lime"> implementacja funkcji "wgraj plik"
+- dodatkowe algorytmy
 
 # CORE
 - pandas + numpy,
-- csv + sql (**WIP**) (08.05.2025)
+- csv + sql (23.05.2025)
 - github - kontrola wersji 
 
 # TO DO & Work In Progress
 - **[WIP]** <span style="color:cyan"> umozliwienie odpalania starego prgoramu przez GUI - modyfikacja *main.py* </span>
-  - tworzenie raport PDF
+  
   - przypisanie jednostek SI vs Imperial w części bazy danych
 
 - implementacja algorytmu odnośnie gradientu z urządzenia z inżynierki
@@ -32,3 +33,6 @@
 - program ma kontrolę wersji GIT
 - modyfikacja tworzenia wykresów w **chartgen.py, logic.py oraz processingcore.py** <span style="color:#94fe0c"> **wszystkie** wykresy się tworzą!!!
 - Informacja zwrotna dla użytkownika - w postaci <span style="color:#94fe0c">"flashed messages"
+- tworzenie raport <span style="color:#94fe0c"> PDF </span>
+  - pobrać raportgen open source
+  - zastanowić się jak ogarnąć funkcję pobierania z przeglądarki w html/flask

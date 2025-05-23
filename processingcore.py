@@ -1,7 +1,6 @@
 # CORE responsible for merging code from engineering degree to graduate degree
 from flask import Blueprint, render_template, redirect
-from flask import g, request, url_for, flash
-
+from flask import g, request, url_for, flash, send_file
 
 processing = Blueprint(__name__, "processing",
                   template_folder="templates",
@@ -10,11 +9,18 @@ processing = Blueprint(__name__, "processing",
 
 PathToDB = 'engparamdb.db'
 
+from reportlab.pdfgen.canvas import Canvas
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.units import inch
+from io import BytesIO
+from datetime import datetime
+
 import sqlite3
 import pandas as pd
 # import numpy as np
 from lib.chartgen import *
 from lib.logic import *
+from lib.pdfgen import *
 import os, time
 
 def get_db():
@@ -69,6 +75,7 @@ def upload():
             cCHT = checkCHT(df,control_r[0][3])
             cEGT = checkEGT(df,control_r[0][4])
             
+            global tempCHT, tempEGT, tempO
             
             tempCHT = []  # temporary param of CHT
             for data in cCHT:
@@ -133,12 +140,37 @@ def upload():
                 )
             else:
                 tempO = 0
-            
+            print(tempCHT, tempEGT, tempO)
             
         elif file.content_type == 'application/vnd.openxmlformats-officedocument.spreadsheet.sheet' or file.content_type == 'application/vnd.ms-excel':
             df = pd.read_excel(file)
         
         return redirect(url_for("processingcore.chart"))
+
+@processing.route('/download',methods=['GET','POST'])
+def download():
+    buffer = BytesIO()
+    if request.method == "POST":
+        print(tempCHT, tempEGT, tempO)
+        cv = Canvas(buffer, pagesize=A4)
+        
+        FirstPage(cv, saveName, tempCHT, tempEGT, tempO)
+        ChartPage(cv, r"static\Wykres_CHT.png")
+        ChartPage(cv, r"static\Wykres_EGT.png")
+        ChartPage(cv, r"static\Wykres_Oil.png")
+        ChartPage(cv, r"static\Wykres AnomalieCiśnienia.png")
+        ChartPage(cv, r"static\Wykres AnomalieTempOleju.png")
+        
+        cv.save() #NOTE: save where?!
+        buffer.seek(0)
+        
+        now = datetime.now().strftime("%d-%m-%Y_%H-%M")
+        return send_file(buffer, 
+                         as_attachment=True,
+                         mimetype="image/pdf",
+                         download_name=f"Raport_{now}.pdf")
+        
+    return render_template("pc_output.html")
 
 if __name__ == '__main__':
     print("UUUPSS, WRONG WAY!!")
