@@ -1,7 +1,6 @@
 # test of test
 from flask import Flask, render_template 
 from flask import request
-import pandas as pd
 
 
 #initialise program

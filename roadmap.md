@@ -19,6 +19,8 @@
   
 - <span style="color:red"> GIT siedzi lokalnie 
 
+## OPTIONAL
+- Dodanie funkcji zapisu liczby przekroczeń dopuszczalnych wartości poszczególnych parametrów w celu przewidywań potencjalnych problemów. 
 
 # ✅<span style="color:#94fe0c"> DONE ✅:
 - baza danych o parametrach pracy poszczególnych silników:

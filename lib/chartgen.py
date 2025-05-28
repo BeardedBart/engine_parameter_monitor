@@ -267,8 +267,6 @@ def OilChart(df,
     plt.savefig((save_path), dpi=600, format="png")
 
 
-#====================================================================================================
-#NOTE: yet to be added
 def WarningChart(i1, dat1, ylabel, chartDir, name, title):
     """
     Kod odpowiadający za tworzenie wykresów zawierających odchylenia
