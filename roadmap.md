@@ -8,7 +8,11 @@
 # CORE
 - pandas + numpy,
 - csv + sql (23.05.2025)
-- github - kontrola wersji 
+- github - kontrola wersji
+- aby zwiększyć uniwersalność, dodać kolumnę z parametrami "dodatkowymi"
+
+Opcjonalnie
+- to użytkownik wybiera, co trzeba zawrzeć w analizie 
 
 # TO DO & Work In Progress
 - **[WIP]** <span style="color:cyan"> umozliwienie odpalania starego prgoramu przez GUI - modyfikacja *main.py* </span>
@@ -18,6 +22,7 @@
 - implementacja algorytmu odnośnie gradientu z urządzenia z inżynierki
   
 - <span style="color:red"> GIT siedzi lokalnie 
+- w opisie w magisterce, dodać schemat ścieżek do poszczególnych miejsc w aplikacji (ala schemat z NanoVNA co masz)
 
 ## OPTIONAL
 - Dodanie funkcji zapisu liczby przekroczeń dopuszczalnych wartości poszczególnych parametrów w celu przewidywań potencjalnych problemów. 

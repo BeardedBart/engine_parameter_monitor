@@ -267,7 +267,7 @@ def OilChart(df,
     plt.savefig((save_path), dpi=600, format="png")
 
 
-def WarningChart(i1, dat1, ylabel, chartDir, name, title):
+def WarningChart(i1, dat1, ylabel, chartDir, name, title, xlabel="Czas[s]"):
     """
     Kod odpowiadający za tworzenie wykresów zawierających odchylenia
     wartości od podanych zakresów danych (EGT, CHT itd.)
@@ -279,7 +279,7 @@ def WarningChart(i1, dat1, ylabel, chartDir, name, title):
             Domyślnie ustawione na 0; 1 -> jednoski SI.
     """
     fig, ax = plt.subplots()
-    ax.set_xlabel("Czas[s]")
+    ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     fig.set_size_inches(10.5, 7.5)  # wym. A4 obrócone o 90°
     fig.set_dpi(300)
