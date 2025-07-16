@@ -27,6 +27,7 @@ from fdbsql import engdb
 app.register_blueprint(engdb, url_prefix="/engdb")
 
 
+# add external site
 from processingcore import processing
 app.register_blueprint(processing, url_prefix="/process_file")
 
@@ -37,5 +38,3 @@ if __name__ == '__main__':
     os.startfile(url)
     app.run(debug=True) # after this command, lines from code do not execute, 
     # command runs like "while True"
-    
-    

@@ -1,7 +1,6 @@
 # CORE responsible for merging code from engineering degree to graduate degree
 from flask import Blueprint, render_template, redirect
 from flask import g, request, url_for, flash, send_file
-from werkzeug.datastructures import FileStorage
 
 
 processing = Blueprint(__name__, "processing",
@@ -89,9 +88,9 @@ def upload():
             df.to_csv(EB,sep=",",mode="w")
             path = os.getcwd()+r"\static"
             
-            EGTchart(df,path,size_x=x,size_y=y,thr_val=control_r[2])
-            CHTchart(df,path,size_x=x,size_y=y,thr_val=control_r[1])
-            OilChart(df,path,size_x=x,size_y=y,thr_val=control_r[0])
+            EGTchart(df,path,size_x=x,size_y=y,thr_val=control_r[2],not_SI=1)
+            CHTchart(df,path,size_x=x,size_y=y,thr_val=control_r[1],not_SI=1)
+            OilChart(df,path,size_x=x,size_y=y,thr_val=control_r[0],not_SI=1)
             
             tmin = (control_r[0]-50)
             tmax = control_r[0]
