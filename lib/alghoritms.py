@@ -1,12 +1,11 @@
 import pandas as pd 
 import numpy as np
+from datetime import datetime, date
 
 
 
-def pdrow2array(file, RowName):
-    df = pd.read_csv(file, low_memory=False)
-    df.columns=df.iloc[0,:]
-
+def pdrow2array(df, RowName):
+    # df.columns=df.iloc[0,:]
     output = df[f'{RowName}'].replace(np.nan, "0.0").tolist()
     output.remove(f"{RowName}")
     output = np.array(output, dtype="float16")
@@ -51,3 +50,25 @@ def cal_mean_val(da,step=60):
             output.append(calcc)
             break
     return output
+
+
+def dtc(df):
+    # short from Duration Time Calculator
+    time = df["Lcl Time"].replace(np.nan, "00:00:00").tolist()
+    time.remove("Lcl Time")
+    time = np.array(time, dtype="str")
+    
+    begin = datetime.strptime(time[4], "%H:%M:%S").time()
+    exit = datetime.strptime(time[-1], "%H:%M:%S").time()
+
+    duration = datetime.combine(date.today(), exit) - datetime.combine(
+        date.today(), begin
+    )
+    duration = duration.seconds
+    step = duration / len(time)
+
+    timeAxis = np.arange(0, duration, step)
+    return timeAxis
+
+if __name__ == "__main__":
+    print("Wrong direction")

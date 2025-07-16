@@ -23,19 +23,22 @@
     </div>
     <div class="col-xs-1" align="center">
         <body>
-            <table id = "tabela">
+            <table id = "tabela" class="table w-75">
+            <thead>
                 <tr>
-                    <td>Nazwa</td>
-                    <td>Typ</td>
-                    <td>T. Oil</td>
-                    <td>CHT</td>
-                    <td>EGT</td>
-                    <td>Min. P Oleju</td>
-                    <td>Maks. P Oleju</td>
+                    <th scope="col">Nazwa silnika</th>
+                    <th scope="col">Typ</th>
+                    <th scope="col">T. Oil</th>
+                    <th scope="col">CHT</th>
+                    <th scope="col">EGT</th>
+                    <th scope="col">Min. P Oleju</th>
+                    <th scope="col">Maks. P Oleju</th>
                 </tr>
+            </thead>
+            <tbody>
                 {%for i in tbl%}
                 <tr>
-                    <td>{{ i[0] }}</td>
+                    <th scope="row">{{ i[0] }}</th>
                     <td>{{ i[1] }}</td>
                     <td>{{ i[2] }}</td>
                     <td>{{ i[3] }}</td>
@@ -44,13 +47,14 @@
                     <td>{{ i[6] }}</td>
                 </tr>
                 {%endfor%}
+            </tbody>
             </table>
         </body>
     </div>
     <form method="POST" action="{{url_for('fdbsql.mod_row_main')}}">
             <div class="form-group">
                 <!-- <label for="engname"></label> -->
-                <input type="text" class="form-control" name="engname" placeholder=>
+                <input type="text" class="form-control" name="engname" placeholder="Nazwa silnika">
             </div>
             <div class="form-group">
                 <input type="text" class="form-control" name="typ" placeholder="Typ silnika">
@@ -71,7 +75,9 @@
             <div class="form-group">
                 <input type="text" class="form-control" name="p_oil_h" placeholder="Min. ciśnienie Oleju">
             </div>
-            <input type="submit" name="Dodaj" class="btn btn-warning" value="Dodaj">
+            <div style="margin-top:10px;" class="col-xs-1 text-center">
+                <input type="submit" name="Aktualizuj" class="btn btn-warning" value="Aktualizuj">
+            </div>
         </form>
     <div style="margin-top:20px;" class="col-xs-1 text-center">
         <p><a href="{{url_for('fdbsql.database')}}" class="btn btn-primary">

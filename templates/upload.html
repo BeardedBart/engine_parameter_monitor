@@ -22,9 +22,9 @@
 
                 <p>Wgraj plik do analizy (format: CSV)</p>
                 <form method="POST" action="{{url_for('processingcore.upload')}}" enctype="multipart/form-data">
-                    <input type="file" name="workfile" accept="text/csv">
-                    <input type="text" name="eng_name" placeholder="Podaj typ silnika">
-                    <input type="submit" value="Wgraj plik"> 
+                    <input type="file" name="workfile" accept="text/csv" class="btn btn-secondary" style="width: 400px;">
+                    <input type="text" name="eng_name" placeholder="Podaj model silnika">
+                    <input type="submit" value="Wgraj plik" class="btn btn-primary"> 
                 </form>
 
         </div>

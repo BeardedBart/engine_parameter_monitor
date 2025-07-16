@@ -15,11 +15,11 @@
             </ul>
         {% endif %}
     {%endwith%}
-    <div>
+    <div class="col-xs-1 text-center">
         <form method="POST" action="{{url_for('fdbsql.del_val')}}">
             <label for="rmvname">Usuń wiersz z bazy danych, usuwanie po nazwie silnika</label>
             <input type="text" class="form-control" name="rmvname" placeholder="Wybierz pozycję">
-            <input type="submit" clas="btn btn-danger" name="Usuń wiersz">
+            <input type="submit" class="btn btn-danger" name="Usuń wiersz" value="Usuń wiersz">
         </form>
     </div>
     <div style="margin-top:20px;" class="col-xs-1 text-center">

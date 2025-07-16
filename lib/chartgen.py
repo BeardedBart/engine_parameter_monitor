@@ -11,7 +11,8 @@ def EGTchart(
             chartDir,
             not_SI=0,
             size_x=11,
-            size_y=8,):
+            size_y=8,
+            thr_val=0.0):
     """
     Funkcja tworząca wykres wartości EGT oraz Wysokości
     w jednostce czasu.
@@ -62,8 +63,7 @@ def EGTchart(
     exit = datetime.strptime(time[-1], "%H:%M:%S").time()
 
     duration = datetime.combine(date.today(), exit) - datetime.combine(
-        date.today(), begin
-    )
+        date.today(), begin)
     duration = duration.seconds
     step = duration / len(time)
 
@@ -77,6 +77,9 @@ def EGTchart(
     ax1.plot(timeAxis, EGT3, label="EGT3")
     ax1.plot(timeAxis, EGT4, label="EGT4")
 
+    if thr_val != 0.0:
+        plt.axhline(thr_val, color='r', label="Granica użytkowa")
+    
     ax2 = ax1.twinx()
     ax2.plot(timeAxis, ALT, label="Wys.", color="cyan")
 
@@ -102,7 +105,8 @@ def CHTchart(
             chartDir, 
             not_SI=0, 
             size_x=11,
-            size_y=8,):
+            size_y=8,
+            thr_val=0.0):
     """
     Funkcja tworząca wykres wartości CHT oraz Wysokości
     w jednostce czasu.
@@ -171,6 +175,9 @@ def CHTchart(
     ax1.plot(timeAxis, CHT3, label="CHT3")
     ax1.plot(timeAxis, CHT4, label="CHT4")
 
+    if thr_val != 0.0:
+        plt.axhline(thr_val, color='r', label="Granica użytkowa")
+
     ax2 = ax1.twinx()
     ax2.plot(timeAxis, ALT, label="Wys.", color="cyan")
 
@@ -194,7 +201,8 @@ def OilChart(df,
             chartDir, 
             not_SI=0,
             size_x=11,
-            size_y=8,):
+            size_y=8,
+            thr_val=0.0):
     """
     Funkcja tworząca wykres wartości ciśnienia
     oraz temperatury oleju w jednostce czasu.
@@ -255,11 +263,14 @@ def OilChart(df,
         ax2.set_ylabel("Ciśnienie [PSI]")
         ax1.set_ylabel("Temperatura [°F]")
 
+    if thr_val != 0.0:
+        ax1.axhline(thr_val, color='r', label="Granica użytkowa")
+
     fig.set_size_inches(size_x , size_y)
     fig.set_dpi(300)
     fig.legend()
     # plt.show()
-
+    
     # basename = os.path.basename(path)
     # basename = basename[0:-4]
     save_path = os.path.join(chartDir,"Wykres_Oil.png")
@@ -267,7 +278,14 @@ def OilChart(df,
     plt.savefig((save_path), dpi=600, format="png")
 
 
-def WarningChart(i1, dat1, ylabel, chartDir, name, title, xlabel="Czas[s]"):
+def WarningChart(i1, 
+                 dat1, 
+                 ylabel, 
+                 chartDir, 
+                 name, 
+                 title, 
+                 xlabel="Czas[s]",
+                 thr_val=0.0):
     """
     Kod odpowiadający za tworzenie wykresów zawierających odchylenia
     wartości od podanych zakresów danych (EGT, CHT itd.)
@@ -290,11 +308,21 @@ def WarningChart(i1, dat1, ylabel, chartDir, name, title, xlabel="Czas[s]"):
         for xs, ys in zip(*get_segments(i1, dat1)):
             plt.plot(xs, ys, color="orange")
     # plt.show()
+    
+    if thr_val != 0.0:
+        plt.axhline(thr_val, color='r', label="Granica użytkowa")
+    
     plt.title(title)
     plt.savefig(f"{chartDir}/Wykres {name}.png", dpi=600, format="png")
 
 
-def WarningChartCombined(check_func, type, ylabel, chartDir, name, title):
+def WarningChartCombined(check_func, 
+                         type, 
+                         ylabel, 
+                         chartDir, 
+                         name, 
+                         title,
+                         thr_val=0.0):
     for i in check_func:
         if i == bool(0):
             i = 0
@@ -321,7 +349,49 @@ def WarningChartCombined(check_func, type, ylabel, chartDir, name, title):
     for xs, ys in zip(*get_segments(i4, d4)):
         plt.plot(xs, ys, color="green", label=label)
         label = None
+        
+    if thr_val != 0.0:
+        plt.axhline(thr_val, color='r', label="Granica użytkowa")    
+    
     plt.legend()
     # plt.show()
     plt.title(title)
     plt.savefig(f"{chartDir}/Wykres {name}.png", dpi=600, format="png")
+
+
+def quick_chart(x,y,
+                path,
+                name,
+                ynd=[],
+                title=None,
+                xlabel=None,
+                ylabel=None,
+                yndlabel=None,
+                width=11,
+                height=7,
+                dpi=300,
+                thr_val=0.0):
+    # dodać labele
+    fig, ax1 = plt.subplots()
+    fig.set_size_inches(width, height)
+    fig.set_dpi(dpi)
+    
+    ax1.set_xlabel(xlabel)
+    ax1.set_ylabel(ylabel)
+    
+    if thr_val != 0.0:
+        plt.axhline(thr_val, color='r', label="Granica użytkowa")
+        
+    ax1.plot(x,y)
+    if len(ynd) != 0:
+        ax2 = ax1.twinx()
+        ax2.plot(x,ynd)
+        ax2.set_ylabel(yndlabel)
+
+    save_path = os.path.join(path,name)
+    plt.legend()
+    plt.savefig(save_path, dpi=600, format="png")
+
+
+if __name__ == "__main__":
+    print("This is a 'chartgen' module, not a full app")

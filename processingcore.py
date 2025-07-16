@@ -15,12 +15,11 @@ PathToDB = 'engparamdb.db'
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.units import inch
-import io, shutil
+import io
 from datetime import datetime
 
 import sqlite3
 import pandas as pd
-import pandas.io.common
 # import numpy as np
 from lib.chartgen import *
 from lib.logic import *
@@ -68,37 +67,37 @@ def upload():
         
         temp = get_db() #Master Data Base
         mdb = pd.read_sql_query("SELECT * FROM engpdb",temp)
-        eng = request.form.get("eng_name")
+        eng = request.form.get("eng_name")     
                 
         if eng in set(mdb["eng_name"]):
-            control_r = mdb.loc[mdb["eng_name"]==eng].to_numpy().tolist()#control row
-            # print(control_r) # Tu będzie pozytywne info zwrotne pop up
-            flash("Podany silnik istnieje w bazie danych", "lert alert-success fade show")
+            #control row
+            control_r = mdb.loc[mdb["eng_name"]==eng].to_numpy().tolist()[0][2:]
+            flash("Podany silnik istnieje w bazie danych", "alert alert-success fade show")
         else:
             flash("Podany silnik nie istnieje w bazie danych", "alert alert-danger fade show")
-            return redirect(url_for("processingcore.upload"))# Tu będzie negatywne info zwrotne pop up
+            return redirect(url_for("processingcore.upload"))
         
         if file.content_type == 'text/csv':
             x,y = 11,7
             
             try:
                 df = pd.read_csv(file, low_memory=False)
-            except pandas.errors.EmptyDataError:
+            except pd.errors.EmptyDataError:
                 flash("Plik CSV jest pusty", "alert alert-danger fade show")
                 return redirect(url_for("processingcore.upload"))
             
             df.to_csv(EB,sep=",",mode="w")
             path = os.getcwd()+r"\static"
             
-            EGTchart(df,path,size_x=x,size_y=y)
-            CHTchart(df,path,size_x=x,size_y=y)
-            OilChart(df,path,size_x=x,size_y=y)
+            EGTchart(df,path,size_x=x,size_y=y,thr_val=control_r[2])
+            CHTchart(df,path,size_x=x,size_y=y,thr_val=control_r[1])
+            OilChart(df,path,size_x=x,size_y=y,thr_val=control_r[0])
             
-            tmin = (control_r[0][2]-50)
-            tmax = control_r[0][2]
+            tmin = (control_r[0]-50)
+            tmax = control_r[0]
             cOil = checkOil(df,p_val=[1,7],t_val=(tmin, tmax)) # p_val is a test value
-            cCHT = checkCHT(df,control_r[0][3])
-            cEGT = checkEGT(df,control_r[0][4])
+            cCHT = checkCHT(df,control_r[1])
+            cEGT = checkEGT(df,control_r[2])
             
             global tempCHT, tempEGT, tempO
             
@@ -116,6 +115,7 @@ def upload():
                     path,
                     "AnomalieCHT",
                     "Wykres ponadnormatywnych temperatur CHT",
+                    thr_val=control_r[1]
                 )
             else:
                 tempCHT = 0
@@ -135,6 +135,7 @@ def upload():
                     path,
                     "AnomalieEGT",
                     "Wykres ponadnormatywnych temperatur EGT",
+                    thr_val=control_r[2]
                 )
             else:
                 tempEGT = 0
@@ -162,6 +163,7 @@ def upload():
                     path,
                     "AnomalieTempOleju",
                     "Wykres temperatury oleju",
+                    thr_val=control_r[0]-40
                 )
             else:
                 tempO = 0
@@ -204,11 +206,12 @@ def new_menu():
     # print(df.head())
     df.columns=df.iloc[0,:]
     data = list(df.columns)
-    data.insert(0, 'czas')
+    data.insert(1, 'czas')
     if request.method == "POST":
         path = os.getcwd()+r"\static"
         x = request.form.get("paramx")
         y = request.form.get("paramy")
+        ynd = request.form.get("param2y")
         # print(x,y)
         
         if x == 'czas':
@@ -216,19 +219,39 @@ def new_menu():
         else:
             xtemp = pdrow2array(df, x) #temporary vars
         ytemp = pdrow2array(df, y)
+
+        nytemp = tail_convert(ytemp)#New X Temporary var
+        yd = cal_mean_val(nytemp)
+        time_step = np.arange(1,len(yd)+1)
         
-        fig, ax1 = plt.subplots()
-        fig.set_size_inches(11, 7)
-        fig.set_dpi(300)
-        ax1.plot(xtemp, ytemp)
+        if ynd != "0":
+            yndtemp = pdrow2array(df, ynd)
+            # quick_chart(xtemp,ytemp,path,"wa.png", yndtemp)
+            quick_chart(xtemp,
+                        ytemp,
+                        path,
+                        "wa.png",
+                        yndtemp,
+                        xlabel=x,
+                        ylabel=y,
+                        yndlabel=ynd)
+        else:
+            quick_chart(xtemp,
+                        ytemp,
+                        path,
+                        "wa.png", 
+                        xlabel=x,
+                        ylabel=y)
         
-        save_path = os.path.join(path,"wa.png")
-        plt.savefig(save_path, dpi=600, format="png")
-        
+        quick_chart(time_step,
+                    yd,path,
+                    "cc.png")
+
         return render_template("pc_nm.html", 
                                tbl=data, 
                                cond=True, 
-                               imgg="wa.png")
+                               img1="wa.png",
+                               img2="cc.png")
         
     return render_template("pc_nm.html", tbl=data)
     

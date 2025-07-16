@@ -15,6 +15,14 @@
             <option value="{{i}}">{{i}}</option>
             {%endfor%}
         </select>
+
+        <h1>Drugi parametr Y (opcjonalnie)</h1>
+        <select class="form-select col-xs-1 text-center" aria-label="Default select example" name="param2y">
+            {%for i in tbl%}
+            <option value="{{i}}">{{i}}</option>
+            {%endfor%}
+        </select>
+
         <div class="col-xs-1" style="margin-top:10px" align="center">
             <input type="submit" value="Prześlij dane" class="btn btn-warning">
         </div>
@@ -22,7 +30,18 @@
 
     {% if cond %}
     <div class="col-xs-1" align="center">
-    <img style="margin-top:20px;" src="{{imgg}}" width="1200" height="800">
+    <img style="margin-top:20px;" src="{{img1}}" width="1000" height="600">
+    </div>
+
+    <div class="col-xs-1" align="center">
+    <img style="margin-top:20px;" src="{{img2}}" width="1000" height="600">
+    </div>
+
+    <div class="col-xs-1" style="margin-top:10px" align="center">
+        <p1>
+            W celu pobrania zdjęć, proszę kliknąć prawym przyciskiem myszy (PPM) na wykres 
+            i wybrać opcję "zapisz"
+        </p1>
     </div>
     {% endif %}
 

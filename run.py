@@ -1,11 +1,12 @@
 # test of test
 from flask import Flask, render_template 
 from flask import request
+import os, signal
 
 
 #initialise program
-app = Flask(__name__, 
-            template_folder="templates", 
+app = Flask(__name__,   
+            template_folder="templates",
             static_folder='static', 
             static_url_path='/')
 app.secret_key="sekrit dokumints )))))"
@@ -14,6 +15,11 @@ app.secret_key="sekrit dokumints )))))"
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+@app.route("/exit")
+def shutdown():
+    os.kill(os.getpid(), signal.SIGINT)
 
 
 # add external site
