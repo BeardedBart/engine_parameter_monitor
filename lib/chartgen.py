@@ -55,7 +55,9 @@ def EGTchart(
             ALT = FTtoM(ALT)
     
     if thr_val != 0.0:
-        plt.axhline(thr_val, color='r', label="Granica użytkowa")
+        plt.axhline(thr_val, color='r', 
+                    label="Granica użytkowa",
+                    linestyle='dashed')
     
     ax2 = ax1.twinx()
     ax2.plot(timeAxis, ALT, label="Wys.", color="cyan")
@@ -69,7 +71,10 @@ def EGTchart(
 
     fig.set_size_inches(size_x, size_y)
     fig.set_dpi(300)
-    fig.legend()
+    fig.legend(loc='lower center',
+               bbox_to_anchor=(0.5,0),
+               fancybox=True,
+               ncol=3)
     # saving procedure
     save_path = os.path.join(chartDir,"Wykres_EGT.png")
     plt.title("Wykres EGT cylindrów oraz wysokości w funkcji czasu.")
@@ -126,7 +131,9 @@ def CHTchart(
         j += 1
     #linia tworzenia wartości granicznej parametru
     if thr_val != 0.0:
-        plt.axhline(thr_val, color='r', label="Granica użytkowa")
+        plt.axhline(thr_val, color='r', 
+                    label="Granica użytkowa",
+                    linestyle='dashed')
 
     ax2 = ax1.twinx()
     ax2.plot(timeAxis, ALT, label="Wys.", color="cyan")
@@ -140,7 +147,10 @@ def CHTchart(
 
     fig.set_size_inches(size_x, size_y)
     fig.set_dpi(300)
-    fig.legend()
+    fig.legend(loc='lower center',
+               bbox_to_anchor=(0.5,0),
+               fancybox=True,
+               ncol=3)
     save_path = os.path.join(chartDir,"Wykres_CHT.png")
     plt.title("Wykres CHT cylindrów oraz wysokości w funkcji czasu.")
     plt.savefig(save_path, dpi=600, format="png")
@@ -215,11 +225,17 @@ def OilChart(df,
         ax1.set_ylabel("Temperatura [°F]")
 
     if thr_val != 0.0:
-        ax1.axhline(thr_val, color='r', label="Granica użytkowa")
+        ax1.axhline(thr_val, color='r', 
+                    label="Granica użytkowa",
+                    linestyle='dashed')
 
     fig.set_size_inches(size_x , size_y)
     fig.set_dpi(300)
-    fig.legend()
+    fig.legend(
+        loc='lower center',
+        bbox_to_anchor=(0.5,0),
+        fancybox=True,
+        ncol=3)
     # plt.show()
     
     # basename = os.path.basename(path)
@@ -261,7 +277,9 @@ def WarningChart(i1,
     # plt.show()
     
     if thr_val != 0.0:
-        plt.axhline(thr_val, color='r', label="Granica użytkowa")
+        plt.axhline(thr_val, color='r', 
+                    label="Granica użytkowa",
+                    linestyle='dashed')
     
     plt.title(title)
     plt.savefig(f"{chartDir}/Wykres {name}.png", dpi=600, format="png")
@@ -302,9 +320,14 @@ def WarningChartCombined(check_func,
         label = None
         
     if thr_val != 0.0:
-        plt.axhline(thr_val, color='r', label="Granica użytkowa")    
+        plt.axhline(thr_val, color='r', 
+                    label="Granica użytkowa",
+                    linestyle='dashed')    
     
-    plt.legend()
+    plt.legend(loc='lower center',
+               bbox_to_anchor=(0.5,0),
+               fancybox=True,
+               ncol=3)
     # plt.show()
     plt.title(title)
     plt.savefig(f"{chartDir}/Wykres {name}.png", dpi=600, format="png")
@@ -331,16 +354,21 @@ def quick_chart(x,y,
     ax1.set_ylabel(ylabel)
     
     if thr_val != 0.0:
-        plt.axhline(thr_val, color='r', label="Granica użytkowa")
+        plt.axhline(thr_val, color='r', 
+                    label="Granica użytkowa",
+                    linestyle='dashed')
         
-    ax1.plot(x,y)
+    ax1.plot(x,y, label=ylabel)
     if len(ynd) != 0:
         ax2 = ax1.twinx()
-        ax2.plot(x,ynd)
+        ax2.plot(x,ynd, label=yndlabel)
         ax2.set_ylabel(yndlabel)
 
     save_path = os.path.join(path,name)
-    plt.legend()
+    fig.legend(loc='lower center',
+               bbox_to_anchor=(0.5,0),
+               fancybox=True,
+               ncol=3)
     plt.savefig(save_path, dpi=600, format="png")
 
 

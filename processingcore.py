@@ -205,12 +205,18 @@ def new_menu():
     # print(df.head())
     df.columns=df.iloc[0,:]
     data = list(df.columns)
-    data.insert(1, 'czas')
+    data.insert(1, 'Czas [s]')
+    options = (
+        "nie",
+        "Wartości średnie z okresu 1 min",
+        "Gradient przyrostu/spadku"
+    )
     if request.method == "POST":
         path = os.getcwd()+r"\static"
         x = request.form.get("paramx")
         y = request.form.get("paramy")
         ynd = request.form.get("param2y")
+        optnvar = request.form.get("optnvar")
         # print(x,y)
         
         if x == 'czas':
@@ -241,18 +247,46 @@ def new_menu():
                         "wa.png", 
                         xlabel=x,
                         ylabel=y)
-        
-        quick_chart(time_step,
-                    yd,path,
-                    "cc.png")
-
+        # tworzenie drugiego wykresu
+        if optnvar == "Wartości średnie z okresu 1 min":
+            quick_chart(time_step,
+                        yd,path,
+                        "cc.png")
+        elif optnvar == "Gradient przyrostu/spadku":
+            # najpierw weźmy parametr z pierwszej osi y 
+            step = 10
+            res = grad_calc(ytemp,step)
+            # filtr przeciw początkowym błędnym odczytom
+            k = 0
+            while k < 10:
+                if res[k] > 1:
+                    res.pop(k)
+                    res.insert(k,np.float(0))
+                k += 1
+            # rozpoczęcie lokalnego tworzenia wykresu
+            fig, ax1 = plt.subplots()
+            x = np.arange(1,len(res)+1,1)
+            ax1.plot(x,res)
+            ax1.set_xlabel(f"Czas co {step} sek.")
+            ax1.set_ylabel("Temperatura [F]")
+            ax1.axhline(0.5, color="#ff3700", linestyle='dashed')
+            ax1.axhline(-0.5, color='#ff9933', linestyle='dashed')
+            # kosmetyka wykresu
+            fig.set_size_inches(11,8)
+            fig.set_dpi(300)
+            save_path = os.path.join(path,"cc.png")
+            plt.savefig(save_path, dpi=600, format="png")
+        else:
+            print("brak drugiego wykresu")
+            
         return render_template("pc_nm.html", 
-                               tbl=data, 
+                               tbl=data,
+                               optn=options, 
                                cond=True, 
                                img1="wa.png",
                                img2="cc.png")
         
-    return render_template("pc_nm.html", tbl=data)
+    return render_template("pc_nm.html", tbl=data, optn=options)
     
     
 if __name__ == '__main__':

@@ -23,6 +23,13 @@
             {%endfor%}
         </select>
 
+        <h1>Drugi wykres (opcjonalnie)</h1>
+        <select class="form-select col-xs-1 text-center" aria-label="Default select example" name="optnvar">
+            {%for i in optn%}
+            <option value="{{i}}">{{i}}</option>
+            {%endfor%}
+        </select>
+
         <div class="col-xs-1" style="margin-top:10px" align="center">
             <input type="submit" value="Prześlij dane" class="btn btn-warning">
         </div>

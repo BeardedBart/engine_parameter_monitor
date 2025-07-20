@@ -70,5 +70,26 @@ def dtc(df):
     timeAxis = np.arange(0, duration, step)
     return timeAxis
 
+
+def grad_calc(data: np.array,step=10):
+    i, arr = 0, []
+    while i < len(data):
+        # print(nCHT1[i])
+        arr.append([data[i]])
+        i += step
+
+    res = []
+    j = 0
+    while j < len(arr):
+        try:
+            calc = (np.array(arr[j+1])-np.array(arr[j]))/step
+            res.append(calc[0])
+            j += 1
+        except IndexError:
+            tcalc = (np.array(arr[-1])-np.array(arr[-2]))/step
+            res.append(tcalc[0])
+            break
+    return res
+
 if __name__ == "__main__":
     print("Wrong direction")
