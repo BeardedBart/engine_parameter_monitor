@@ -173,5 +173,44 @@ def mod_row_main():
     
     return render_template('db_chng_row.html', tbl=temp_data)
 
+
+@engdb.route("/add_col", methods=['GET','POST'])
+def add_col():
+    DTYPES = ['char(32)','REAL','INTEGER','TEXT']
+    if request.method == "POST":
+        conn = get_db()
+        cur = conn.cursor()
+        ColName = request.form.get('ColName')
+        dtype = request.form.get('dtype')
+        cur.execute(f"""ALTER TABLE engpdb
+                    ADD '{ColName}' '{dtype}';
+                    """)
+        conn.commit()
+        conn.close()
+        return redirect(url_for('fdbsql.database'))
+        
+    return render_template('db_add_col.html', tbl=DTYPES)
+
+@engdb.route('/rem_col', methods=['GET','POST'])
+def rem_col():
+    conn = get_db()
+    cur = conn.cursor()
+    NAMES = list()
+    # ta - temporary array
+    ta = cur.execute(f"""PRAGMA table_info('engpdb')
+                        """).fetchall()
+    for i in ta:
+        NAMES.append(i[1])
+    if request.method == 'POST':
+        RColName = request.form.get('RColName')
+        cur.execute(f"""ALTER TABLE engpdb
+                    DROP COLUMN '{RColName}'""")
+        conn.commit()
+        conn.close()
+        return redirect(url_for('fdbsql.database'))
+        
+    return render_template('db_rem_col.html',tbl=NAMES)
+
+
 if __name__ == '__main__':
     print("Wrong way!")

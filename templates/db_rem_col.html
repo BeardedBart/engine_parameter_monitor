@@ -1,0 +1,28 @@
+{%extends "base.html"%}
+{%block content%}
+<body>
+    <div class="col-xs-1 text-center">
+    <h1>Usuń kolumnę z bazy danych</h1>
+    <p>
+        <span style="color:#fe940c">
+            <b>UWAGA:</b> aby program działał poprawnie, należy odpowiednio zmodyfikować plik: "db_view.html"
+        </span><br>
+        <span style="color:#fe510c">
+            <b>UWAGA:</b> nie należy usuwać kolumn podstawowych, zaburzy to poprawne działanie programu!
+        </span>
+    </p>
+    <form method="POST" action="{{url_for('fdbsql.rem_col')}}">
+        <div style="margin-top:10px">
+            <select class="form-select col-xs-1 text-center" aria-label="Default select example" name="RColName">
+                {%for i in tbl%}
+                <option value="{{i}}">{{i}}</option>
+                {%endfor%}
+            </select>
+        </div>
+        <div style="margin-top:10px;" class="col-xs-1 text-center">
+            <input type="submit" name="Dodaj" class="btn btn-danger" value="Usuń kolumnę">
+        </div>
+    </form>
+    </div>
+</body>
+{%endblock%}

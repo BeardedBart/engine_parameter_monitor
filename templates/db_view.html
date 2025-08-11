@@ -16,6 +16,8 @@
                         <th scope="col">EGT</th>
                         <th scope="col">Min. P Oleju</th>
                         <th scope="col">Maks. P Oleju</th>
+                        <!-- TUTAJ NALEŻY DODAĆ LINIĘ KODU Z ZMIENIONĄ NAZWĄ KOLUMNY 
+                         (podaną pomiędzy znakami "><"), JEŻELI UŻYTKOWNIK CHCE DODAĆ KOLUMNĘ DO BAZY DANYCH -->
                     </tr>
                 </thead>
                 <tbody>
@@ -28,6 +30,8 @@
                     <td>{{ i[4] }}</td>
                     <td>{{ i[5] }}</td>
                     <td>{{ i[6] }}</td>
+                    <!-- TUTAJ NALEŻY DODAĆ LINIĘ KODU ZE ZMIENIONYM O "+1" ZNAKIEM, np. i[7],
+                     JEŻELI UŻYTKOWNIK CHCE DODAĆ KOLUMNĘ DO BAZY DANYCH -->
                 </tr>
                 {%endfor%}
                 </tbody>
@@ -42,6 +46,16 @@
     <div style="margin-top:10px;" class="col-xs-1 text-center">
         <a href="{{url_for('fdbsql.mod_row_main')}}" class="btn btn-info">
             Edytuj wiersz danych
+        </a>
+    </div>
+    <div style="margin-top:10px;" class="col-xs-1 text-center">
+        <a href="{{url_for('fdbsql.add_col')}}" class="btn btn-info">
+            Dodaj kolumnę
+        </a>
+    </div>
+    <div style="margin-top:10px;" class="col-xs-1 text-center">
+        <a href="{{url_for('fdbsql.rem_col')}}" class="btn btn-warning">
+            Usuń kolumnę
         </a>
     </div>
         <div style="margin-top:10px" class="col-xs-1 text-center">
