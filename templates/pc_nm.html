@@ -1,34 +1,69 @@
 {%extends "base.html"%}
 {%block content%}
-<body>
+<body class="col-xs-1 text-center">
     <form method="POST" action="{{url_for('processingcore.new_menu')}}">
-        <h1>Parametr X</h1>
+        <div style="margin-top:5px">
+        <h2>Parametr X</h2>
         <select class="form-select col-xs-1 text-center" aria-label="Default select example" name="paramx">
             {%for i in tbl%}
             <option value="{{i}}">{{i}}</option>
             {%endfor%}
         </select>
-
-        <h1>Parametr Y</h1>
+        </div>
+        <div style="margin-top:10px">
+        <h2>Parametr Y</h2>
         <select class="form-select col-xs-1 text-center" aria-label="Default select example" name="paramy">
             {%for i in tbl%}
             <option value="{{i}}">{{i}}</option>
             {%endfor%}
         </select>
-
-        <h1>Drugi parametr Y (opcjonalnie)</h1>
+        </div>
+        <div style="margin-top:10px">
+        <h2>Drugi parametr Y (opcjonalnie)</h2>
         <select class="form-select col-xs-1 text-center" aria-label="Default select example" name="param2y">
             {%for i in tbl%}
             <option value="{{i}}">{{i}}</option>
             {%endfor%}
         </select>
-
-        <h1>Drugi wykres (opcjonalnie)</h1>
+        </div>
+        <div style="margin-top:30px">
+        <h2>Drugi wykres (opcjonalnie)</h2>
+        <p> 
+            <b>Uwaga:</b> czas domyślny ("krok") ustawiony jest na 10 sekund.
+        </p>
         <select class="form-select col-xs-1 text-center" aria-label="Default select example" name="optnvar">
             {%for i in optn%}
             <option value="{{i}}">{{i}}</option>
             {%endfor%}
         </select>
+        </div>
+
+    <div style="margin-top:20px;" class="container">
+        <div class="row">
+        <h2>Ustawienia</h2>
+        </div>
+            <div class="row">
+                <div class="col-sm">
+                    <h4>Krok</h4>
+                    <p>
+                        Dotyczy wykresu zawierającego gradient
+                    </p>
+                    <input type="text" class="form-text" name="krok" placeholder="Ile sekund?">
+                </div>
+                <div class="col-sm">
+                    <h4>Linie graniczne</h4>
+                    <p>
+                        Dotyczy wykresu zawierającego gradient
+                    </p>
+                    <label for="checkbox">Włącz</label>
+                        <input type="checkbox" class="form-check-input" name="linia" id="linia">
+                </div>
+                <div class="col-sm">
+                    <h4>Czas dla wartości średniej</h4>
+                    <input type="text" class="form-text" name="mediumt" placeholder="Ile sekund?">
+                </div>
+            </div>
+    </div>
 
         <div class="col-xs-1" style="margin-top:10px" align="center">
             <input type="submit" value="Prześlij dane" class="btn btn-warning">

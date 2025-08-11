@@ -26,28 +26,27 @@ def tail_convert(da):
     return nda
 
 
-def cal_mean_val(da,step=60):
+def cal_mean_val(darr,step=60):
     # da -> numpy data array 
+    da = darr.tolist()
+    stop = len(da)
     output = []
     i = 0
-    while i <= len(da):
+    while i <= stop:
         if i != len(da) - step:
-            tl = [] #temporary list 
+            tl = float()
             for j in range(step):
-                k = i + j
-                tl.append(da[k])
-            tvar = np.sum(tl)#temporary value
-            calc = tvar/step
+                try:
+                    tl += da.pop(j)
+                except IndexError:
+                    k = 0
+                    while k < len(da):
+                        tl += da.pop(k)
+                        k += 1
+            calc = tl/step
             output.append(calc)
             i += step
         else:
-            tll = [] #temporary 2nd list
-            for j in range(step - 1):
-                k = i + j
-                tll.append(da[k])
-            tvar1 = np.sum(tll)
-            calcc = tvar1/(step-1)
-            output.append(calcc)
             break
     return output
 

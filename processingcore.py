@@ -88,9 +88,15 @@ def upload():
             df.to_csv(EB,sep=",",mode="w")
             path = os.getcwd()+r"\static"
             
-            EGTchart(df,path,size_x=x,size_y=y,thr_val=control_r[2],not_SI=1)
-            CHTchart(df,path,size_x=x,size_y=y,thr_val=control_r[1],not_SI=1)
-            OilChart(df,path,size_x=x,size_y=y,thr_val=control_r[0],not_SI=1)
+            EGTchart(df,path,size_x=x,size_y=y,thr_val=control_r[2])
+            CHTchart(df,path,size_x=x,size_y=y,thr_val=control_r[1])
+            print(PSItoBAR(control_r[3]),PSItoBAR(control_r[4]))
+            OilChart(df,path,size_x=x,size_y=y,t_val=control_r[0], 
+                     p_min=PSItoBAR(control_r[3]), 
+                     p_max=PSItoBAR(control_r[4])) #TypeError: 'float' object is not iterable
+            #inicjacja wykresów pomocniczych
+            alt_oat(df,path,size_x=x,size_y=y)
+            rpm_ff(df,path,size_x=x,size_y=y)
             
             tmin = (control_r[0]-50)
             tmax = control_r[0]
@@ -114,7 +120,7 @@ def upload():
                     path,
                     "AnomalieCHT",
                     "Wykres ponadnormatywnych temperatur CHT",
-                    thr_val=control_r[1]
+                    t_val=control_r[1]
                 )
             else:
                 tempCHT = 0
@@ -162,7 +168,7 @@ def upload():
                     path,
                     "AnomalieTempOleju",
                     "Wykres temperatury oleju",
-                    thr_val=control_r[0]-40
+                    thr_val=control_r[0]
                 )
             else:
                 tempO = 0
@@ -184,6 +190,9 @@ def download():
         ChartPage(cv, r"static\Wykres_Oil.png")
         ChartPage(cv, r"static\Wykres AnomalieCiśnienia.png")
         ChartPage(cv, r"static\Wykres AnomalieTempOleju.png")
+        # dodanie dodatkowych wykresów do raportu
+        ChartPage(cv, r"static\aux1.png")
+        ChartPage(cv, r"static\aux2.png")
         
         cv.save() #NOTE: save where?!
         buffer.seek(0)
@@ -217,23 +226,25 @@ def new_menu():
         y = request.form.get("paramy")
         ynd = request.form.get("param2y")
         optnvar = request.form.get("optnvar")
+        step = request.form.get("krok",10, type=int)
+        print(step)# zwróci 10, jeżeli nic nie będzie na wejściu
+        lingraf = "linia" in request.form
+        print(lingraf)
+        # lingraf = bool(lingraf)
+        mediumt = request.form.get("mediumt",60, type=int)
         # print(x,y)
         
-        if x == 'czas':
+        if x == 'Czas [s]':
             xtemp = dtc(df)
         else:
-            xtemp = pdrow2array(df, x) #temporary vars
+            xtemp = pdrow2array(df, x) #zmienne "lokalne"
         ytemp = pdrow2array(df, y)
-
-        nytemp = tail_convert(ytemp)#New X Temporary var
-        yd = cal_mean_val(nytemp)
-        time_step = np.arange(1,len(yd)+1)
-        
+       
         if ynd != "0":
             yndtemp = pdrow2array(df, ynd)
             # quick_chart(xtemp,ytemp,path,"wa.png", yndtemp)
             quick_chart(xtemp,
-                        ytemp,
+                        FtoC(ytemp),
                         path,
                         "wa.png",
                         yndtemp,
@@ -242,36 +253,46 @@ def new_menu():
                         yndlabel=ynd)
         else:
             quick_chart(xtemp,
-                        ytemp,
+                        FtoC(ytemp),
                         path,
                         "wa.png", 
                         xlabel=x,
                         ylabel=y)
-        # tworzenie drugiego wykresu
+
+        # NOTE: tworzenie drugiego wykresu
         if optnvar == "Wartości średnie z okresu 1 min":
+            sp = 300
+            nytemp = FtoC(ytemp)
+            nnytemp = tail_convert(ytemp) #nowa tymczasowa zmienna dodatkowa
+            yd = cal_mean_val(nnytemp,sp) 
+            time_step = np.arange(1,len(yd)+1)
             quick_chart(time_step,
                         yd,path,
-                        "cc.png")
+                        "cc.png",
+                        xlabel=f"Czas co {sp} s",
+                        ylabel=y)
         elif optnvar == "Gradient przyrostu/spadku":
             # najpierw weźmy parametr z pierwszej osi y 
-            step = 10
+            # step - krok, co ile sekund ma być próbkowanie
+            ytemp = FtoC(ytemp)
             res = grad_calc(ytemp,step)
             # filtr przeciw początkowym błędnym odczytom
             k = 0
             while k < 10:
                 if res[k] > 1:
                     res.pop(k)
-                    res.insert(k,np.float(0))
+                    res.insert(k,np.float64(0))
                 k += 1
             # rozpoczęcie lokalnego tworzenia wykresu
             fig, ax1 = plt.subplots()
             x = np.arange(1,len(res)+1,1)
-            ax1.plot(x,res)
+            ax1.plot(x,res,"o")
             ax1.set_xlabel(f"Czas co {step} sek.")
-            ax1.set_ylabel("Temperatura [F]")
-            ax1.axhline(0.5, color="#ff3700", linestyle='dashed')
-            ax1.axhline(-0.5, color='#ff9933', linestyle='dashed')
-            # kosmetyka wykresu
+            ax1.set_ylabel("Współczynnik kierunkowy [°F/min]")
+            if lingraf == True:
+                ax1.axhline(0.5, color="#ff1e00", linestyle='dashed')
+                ax1.axhline(-0.5, color="#ff9933", linestyle='dashed')
+            # wygląd wykresu
             fig.set_size_inches(11,8)
             fig.set_dpi(300)
             save_path = os.path.join(path,"cc.png")

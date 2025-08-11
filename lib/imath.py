@@ -2,7 +2,7 @@
 import numpy as np
 
 
-def FtoC(array, decimals=4):
+def FtoC(array: np.array, decimals=4):
     """
     Funkcja zmieniająca wartości temperatury
     z stopni [F] na stopnie [C]
@@ -15,6 +15,20 @@ def FtoC(array, decimals=4):
     np.round(newArray, decimals)
     return newArray
 
+
+def CtoF(array: np.array, decimals=4):
+    """
+    Funkcja zmieniająca wartości temperatury
+    z stopni [C] na stopnie [F]
+    """
+    newArray = []
+    for v in array:
+        tv = (v*9/5)+32
+        newArray.append(tv)
+    newArray = np.array(newArray, dtype='float16')
+    np.round(newArray, decimals)
+    return newArray
+    
 
 def FTtoM(array, decimals=4):
     """
@@ -33,15 +47,23 @@ def PSItoBAR(array, decimals=4):
     """
     Funkcja zmieniająca wartości
     ciśnienia z [PSI] na [bar]
+    (osbługuje również pojedynczą wartość,
+    nie tylko całe listy)
     """
-    newArray = []
-    for val in array:
-        tv = val * 0.0689475729
-        newArray.append(tv)
-    newArray = np.array(newArray, dtype="float16")
-    np.round(newArray, decimals)
-    return newArray
-
+    try:
+        newArray = []
+        for val in array:
+            tv = val * 0.0689475729
+            newArray.append(tv)
+        newArray = np.array(newArray, dtype="float16")
+        np.round(newArray, decimals)
+        return newArray
+    except TypeError:
+        decimals = 3
+        newVal = float(array)
+        newVal = newVal * 0.0689475729
+        newVal = np.round(newVal, decimals)
+        return newVal
 
 def get_segments(X, Y):
     """
@@ -80,3 +102,13 @@ def get_segments(X, Y):
             return xss, yss
     else:
         return [0, 0, 0], [0, 0, 0]
+    
+    
+def GtoL(array: np.array, decimals=4):
+    newArray = []
+    for val in array:
+        tv = val * 3.78541178
+        newArray.append(tv)
+    newArray = np.array(newArray, dtype="float16")
+    np.round(newArray, decimals)
+    return newArray

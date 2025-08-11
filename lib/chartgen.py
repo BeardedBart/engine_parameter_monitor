@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import datetime, date
 from lib.imath import *
-from lib.alghoritms import pdrow2array
+from lib.alghoritms import pdrow2array, dtc
 import os, re
 
 
@@ -47,7 +47,10 @@ def EGTchart(
     # Tworzenie wszystkich linii danych parametrów
     j = 0
     while j < len(egtML):
-        ax1.plot(timeAxis,egtML[j], label=f"{egtNames[j]}")
+        if not_SI == 0:
+            ax1.plot(timeAxis,FtoC(egtML[j]), label=f"{egtNames[j]}")
+        else:
+            ax1.plot(timeAxis,egtML[j], label=f"{egtNames[j]}")
         j += 1
     #Tworzenie linii danych wysokości
     ALT = pdrow2array(df,"AltInd")
@@ -56,7 +59,7 @@ def EGTchart(
     
     if thr_val != 0.0:
         plt.axhline(thr_val, color='r', 
-                    label="Granica użytkowa",
+                    label="Granica użytkowa EGT",
                     linestyle='dashed')
     
     ax2 = ax1.twinx()
@@ -127,12 +130,15 @@ def CHTchart(
     # Tworzenie wszystkich linii danych parametru
     j = 0
     while j < len(chtML):
-        ax1.plot(timeAxis,chtML[j], label=f"{chtNames[j]}")
+        if not_SI == 0:
+            ax1.plot(timeAxis,FtoC(chtML[j]), label=f"{chtNames[j]}")
+        else:
+            ax1.plot(timeAxis,chtML[j], label=f"{chtNames[j]}")
         j += 1
     #linia tworzenia wartości granicznej parametru
     if thr_val != 0.0:
         plt.axhline(thr_val, color='r', 
-                    label="Granica użytkowa",
+                    label="Granica użytkowa CHT",
                     linestyle='dashed')
 
     ax2 = ax1.twinx()
@@ -161,7 +167,9 @@ def OilChart(df,
             not_SI=0,
             size_x=11,
             size_y=8,
-            thr_val=0.0):
+            t_val=0.0,
+            p_min=0.0,
+            p_max=0.0):
     """
     Funkcja tworząca wykres wartości ciśnienia
     oraz temperatury oleju w jednostce czasu.
@@ -224,10 +232,16 @@ def OilChart(df,
         ax2.set_ylabel("Ciśnienie [PSI]")
         ax1.set_ylabel("Temperatura [°F]")
 
-    if thr_val != 0.0:
-        ax1.axhline(thr_val, color='r', 
-                    label="Granica użytkowa",
+    if t_val != 0.0:
+        ax1.axhline(t_val, color='r', 
+                    label="Granica użytkowa temperatury",
                     linestyle='dashed')
+        ax2.axhline(p_min, color="#d700a8", 
+                    label="Dolna g. użytk. ciśnienia",
+                    linestyle='dashdot')
+        ax2.axhline(p_max, color="#ff5900", 
+                    label="Górna g. użytk. ciśnienia",
+                    linestyle='dashdot')
 
     fig.set_size_inches(size_x , size_y)
     fig.set_dpi(300)
@@ -242,6 +256,90 @@ def OilChart(df,
     # basename = basename[0:-4]
     save_path = os.path.join(chartDir,"Wykres_Oil.png")
     plt.title("Wykres temperatury oraz ciśnienia oleju w funkcji czasu.")
+    plt.savefig((save_path), dpi=600, format="png")
+    
+
+#Wykresy pomocnicze  
+def alt_oat(df,
+            chartDir, 
+            not_SI=0,
+            size_x=11,
+            size_y=8):
+    df.columns = df.iloc[0, :]
+    
+    x = dtc(df)
+    alt = pdrow2array(df, 'AltInd')
+    if not_SI == 0:
+        alt = FTtoM(alt)
+    oat = pdrow2array(df, 'OAT')
+    if not_SI == 0:
+        oat = FtoC(oat)
+
+    fig, ax1 = plt.subplots()
+    fig.set_size_inches(size_x, size_y)  # wym. A4 obrócone o 90°
+    fig.set_dpi(300)
+    
+    ax1.plot(x, alt, label="Wysokość")
+    
+    ax2 = ax1.twinx()
+    ax2.plot(x, oat, label="Temperatura zewn.", color="orange")
+    
+    ax1.set_xlabel("Czas [s]")
+    if not_SI == 0:
+        ax1.set_ylabel("Wysokość [m]")
+        ax2.set_ylabel("Temperatura zewnętrzna [°C]")
+    else:
+        ax1.set_ylabel("Wysokość [ft]")
+        ax2.set_ylabel("Temperatura zewnętrzna [°F]")
+    fig.legend(
+        loc='lower center',
+        bbox_to_anchor=(0.5,0),
+        fancybox=True,
+        ncol=3)
+    
+    # NOTE: "aux1" od pomocniczy nr 1
+    save_path = os.path.join(chartDir,"aux1.png") 
+    plt.title("Wykres wysokości oraz temperatury zewnętrznej w funkcji czasu.")
+    plt.savefig((save_path), dpi=600, format="png")
+    
+    
+def rpm_ff(df,
+            chartDir, 
+            not_SI=0,
+            size_x=11,
+            size_y=8):
+    df.columns = df.iloc[0, :]
+    
+    x = dtc(df)
+    rpm = pdrow2array(df, 'E1 RPM')
+    ff = pdrow2array(df, 'E1 FFlow') #unit: GPH
+    if not_SI == 0:
+        ff = GtoL(ff)
+
+    fig, ax1 = plt.subplots()
+    fig.set_size_inches(size_x, size_y)  # wym. A4 obrócone o 90°
+    fig.set_dpi(300)
+    
+    ax1.plot(x, rpm, label="Prd. obrotowa")
+    
+    ax2 = ax1.twinx()
+    ax2.plot(x, ff, label="Przepływ paliwa", color="orange")
+    
+    ax1.set_xlabel("Czas [s]")
+    ax1.set_ylabel("Prędkość obrotowa [n/min]")
+    if not_SI == 0:
+        ax2.set_ylabel("Przepływ paliwa [L/h]")
+    else:
+        ax2.set_ylabel("Przepływ paliwa [Gal/h]")
+    fig.legend(
+        loc='lower center',
+        bbox_to_anchor=(0.5,0),
+        fancybox=True,
+        ncol=3)
+    
+    # NOTE: "aux2" od pomocniczy nr 2
+    save_path = os.path.join(chartDir,"aux2.png") 
+    plt.title("Wykres prd. obrotowej oraz przepływu paliwa w funkcji czasu.")
     plt.savefig((save_path), dpi=600, format="png")
 
 
@@ -361,7 +459,7 @@ def quick_chart(x,y,
     ax1.plot(x,y, label=ylabel)
     if len(ynd) != 0:
         ax2 = ax1.twinx()
-        ax2.plot(x,ynd, label=yndlabel)
+        ax2.plot(x,ynd, label=yndlabel, color='orange')
         ax2.set_ylabel(yndlabel)
 
     save_path = os.path.join(path,name)
