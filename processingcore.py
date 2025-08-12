@@ -90,7 +90,7 @@ def upload():
             
             EGTchart(df,path,size_x=x,size_y=y,thr_val=control_r[2])
             CHTchart(df,path,size_x=x,size_y=y,thr_val=control_r[1])
-            print(PSItoBAR(control_r[3]),PSItoBAR(control_r[4]))
+            # print(PSItoBAR(control_r[3]),PSItoBAR(control_r[4]))
             OilChart(df,path,size_x=x,size_y=y,t_val=control_r[0], 
                      p_min=PSItoBAR(control_r[3]), 
                      p_max=PSItoBAR(control_r[4])) #TypeError: 'float' object is not iterable
@@ -98,9 +98,12 @@ def upload():
             alt_oat(df,path,size_x=x,size_y=y)
             rpm_ff(df,path,size_x=x,size_y=y)
             
+            # domyślna praca w jednostkach imperialnych
             tmin = (control_r[0]-50)
             tmax = control_r[0]
-            cOil = checkOil(df,p_val=[1,7],t_val=(tmin, tmax)) # p_val is a test value
+            cOil = checkOil(df,
+                            p_val=[PSItoBAR(control_r[3]),PSItoBAR(control_r[4])],
+                            t_val=(tmin, tmax)) # p_val is a test value
             cCHT = checkCHT(df,control_r[1])
             cEGT = checkEGT(df,control_r[2])
             
