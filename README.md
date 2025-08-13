@@ -1,4 +1,9 @@
 # Niniejszy dokument stanowi <span style="color:#94fe0C">instrukcję użytkowania </span> aplikacji
+## ⚠WAŻNE:⚠
+Przed pobraniem kodu źródłowego z repozytorium, należy zainstalować wersję *Python*'a: 3.13.1 na komputer Użytkownika<br>
+Link do pobrania: https://www.python.org/downloads/release/python-3131/ <br>
+**Następnie** w wierszu poleceń wymagane jest wpisanie komendy: 
+<span style="color:#fe940c"> pip install -r requirements.txt </span><br>pozwala ona na zainstalowanie wszystkich niezbędnych bibliotek potrzebnych do prawidłowego działania aplikacji
 ## Informacje o pliku CSV
 ### Składnia
 Nazwa kolumny - dowolna, lecz aby automatyka działała poprawnie, muszą znaleźć się kolumny "egt", "cht" czy choćby "Lcl Time". <br>
