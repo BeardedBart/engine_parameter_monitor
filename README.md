@@ -32,12 +32,12 @@ Informacje na dzień 10.08.2025
 Aby uruchomić aplikację, należy uruchomić plik wykonawczy <span style="color:#fe940c">run.py </span>, następnie aplikacja samoistnie otworzy odpowiednie okno w przeglądarce. <br>
 Niniejszy schemat przedstawia wszystkie dostępne obecnie funkcjonalności aplikacji
 
-![alt text](other\schem1.png)
+![alt text](other/schem1.png)
 
 
 ##  Informacja o generowaniu wykresów własnych
 
-![alt text](other\schem2.png)
+![alt text](other/schem2.png)
 
 <p>Program umożliwia tworzenie wykresów dodatkowych z wgranego wcześniej pliku CSV, które to są oparte o dane wejściowe zadane przez Użytkownika. Powyższe zdjęcie przedstawia wybór opcji oraz ustawień, które należy wybrać, aby zostały wygenerowane dodatkowe wykresy. Parametr „X” to atrybut, którego wartości będą znajdowały się na osi odciętych (OX), natomiast wartości parametru „Y” należeć będą do osi rzędnych (OY). W razie potrzeby można utworzyć drugą linię danych (która jako oś odciętych, wykorzystywać będzie wartości z wybranego już „X”), w takim przypadku należy zaznaczyć wybrany parametr w polu „Drugi parametr Y (opcjonalnie)”; jego wartości zostaną przedstawione na osi pomocniczej po prawej stronie wykresu.</p> 
 <p>Do dyspozycji jest również opcja wygenerowania drugiego dodatkowego wykresu, który będzie stworzony na podstawie danych zawartych w wcześniejszym formularzu, wykresy te są to (w wersji 1.0): gradient przyrostu/spadku wybranego parametru temperatury (w odstępie próbkowania – „kroku” – co 10 s) i wartość średnia w ustalonym przedziale czasowym (domyślnie 60 s).</p>
